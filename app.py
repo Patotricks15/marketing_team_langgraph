@@ -94,10 +94,18 @@ def marketing_revision_agent_node(state: dict) -> dict:
 builder = StateGraph(MarketingState)
 builder.add_node("MarketingContentAgent", marketing_content_agent_node)
 builder.add_node("MarketingRevisionAgent", marketing_revision_agent_node)
+
 builder.add_edge(START, "MarketingContentAgent")
 builder.add_edge("MarketingContentAgent", "MarketingRevisionAgent")
 builder.add_edge("MarketingRevisionAgent", END)
+
 graph = builder.compile()
+
+png_bytes = graph.get_graph(xray=1).draw_mermaid_png()
+
+# Save the PNG data to a file
+with open("marketing_team_graph.png", "wb") as f:
+    f.write(png_bytes)
 
 # Interactive conversational loop
 print("=== Multi-Agent Marketing System ===")
