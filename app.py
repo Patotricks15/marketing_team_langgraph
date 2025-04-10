@@ -36,6 +36,20 @@ marketing_revision_agent = create_react_agent(
 )
 
 def marketing_content_agent_node(state: dict) -> dict:
+    """
+    Node that generates initial social media posts based on the user's request 
+    using the MarketingContentAgent. The output will be three social media 
+    posts with an authentic and creative tone.
+    
+    Args:
+        state (dict): The current state of the system.
+            - 'question' (str): The user's marketing request.
+    
+    Returns:
+        dict: A dictionary with the generated social media posts.
+            - 'marketing_posts' (list): The generated social media posts.
+    """
+
     message = (
         f"User request: {state['question']}\n"
         "Generate three social media posts with an authentic and creative tone."
@@ -49,6 +63,20 @@ def marketing_content_agent_node(state: dict) -> dict:
     return {"marketing_posts": posts}
 
 def marketing_revision_agent_node(state: dict) -> dict:
+    """
+    Node that takes the user's feedback and the original marketing posts and 
+    requests the MarketingRevisionAgent to revise the posts according to the 
+    feedback. The output will be three revised social media posts.
+    
+    Args:
+        state (dict): The current state of the system.
+            - 'marketing_posts' (list): The original social media posts.
+            - 'revision_feedback' (str): The user's feedback for the revisions.
+    
+    Returns:
+        dict: A dictionary with the revised social media posts.
+            - 'final_posts' (list): The revised social media posts.
+    """
     message = (
         f"Original posts:\n1. {state['marketing_posts'][0]}\n2. {state['marketing_posts'][1]}\n3. {state['marketing_posts'][2]}\n\n"
         f"User feedback: {state.get('revision_feedback', '')}\n\n"
