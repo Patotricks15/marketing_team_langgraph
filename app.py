@@ -35,7 +35,7 @@ marketing_revision_agent = create_react_agent(
     tools=[]
 )
 
-def marketing_content_agent_node(state: dict) -> dict:
+def marketing_content_agent_node(state: MarketingState):
     """
     Node that generates initial social media posts based on the user's request 
     using the MarketingContentAgent. The output will be three social media 
@@ -62,7 +62,7 @@ def marketing_content_agent_node(state: dict) -> dict:
         posts = posts + [""] * (3 - len(posts))
     return {"marketing_posts": posts}
 
-def marketing_revision_agent_node(state: dict) -> dict:
+def marketing_revision_agent_node(state: MarketingState):
     """
     Node that takes the user's feedback and the original marketing posts and 
     requests the MarketingRevisionAgent to revise the posts according to the 
@@ -111,13 +111,8 @@ with open("marketing_team_graph.png", "wb") as f:
 print("=== Multi-Agent Marketing System ===")
 print("Request a marketing post to receive three social media options.")
 user_question = input("Enter your marketing request: ")
-initial_state: MarketingState = {
-    "question": user_question,
-    "marketing_posts": [],
-    "revision_feedback": None,
-    "final_posts": None
-}
-state_after_content = graph.invoke(initial_state)
+
+state_after_content = graph.invoke({"question": user_question})
 print("\n--- Generated Posts ---")
 for idx, post in enumerate(state_after_content["marketing_posts"], start=1):
     print(f"Option {idx}: {post}")
